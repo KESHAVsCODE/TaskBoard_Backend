@@ -3,14 +3,11 @@ const User = require("../models/User");
 const Task = require("../models/Task");
 const createList = async (req, res) => {
   const { listName, userId } = req.body;
-  if (!listName || !userId) return res.send("All fields arr required");
   console.log(listName);
   try {
     const data = await List.create({ listName, UserId: userId });
-    console.log(data);
-    res
-      .status(200)
-      .json({ status: "success", message: "list created successfully" });
+    console.dir(data);
+    res.status(200).json({ status: "success", list: data });
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ status: "failed", message: error.message });
