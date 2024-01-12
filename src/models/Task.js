@@ -21,6 +21,7 @@ const Task = db.define(
   },
   {
     tableName: "tasks",
+    paranoid: true,
   }
 );
 

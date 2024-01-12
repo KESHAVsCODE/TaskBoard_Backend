@@ -1,9 +1,10 @@
 const List = require("../models/List");
 const User = require("../models/User");
 const Task = require("../models/Task");
+require("dotenv").config();
+
 const createList = async (req, res) => {
   const { listName, userId } = req.body;
-  console.log(listName);
   try {
     const data = await List.create({ listName, UserId: userId });
     console.dir(data);
@@ -15,8 +16,7 @@ const createList = async (req, res) => {
 };
 
 const getListData = async (req, res) => {
-  const userId = "c3e75a36-143c-4f64-bf57-8dfc84cd17d1";
-  if (!userId) return res.send("all requried");
+  const { userId } = req.body;
   try {
     // Find the user with associated lists and tasks
     const user = await User.findByPk(userId, {
@@ -27,9 +27,12 @@ const getListData = async (req, res) => {
         },
       ],
     });
+    console.log(user);
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res
+        .status(404)
+        .json({ status: "failed", message: "User not found" });
     }
 
     // Check if user has lists

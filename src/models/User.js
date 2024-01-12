@@ -17,7 +17,10 @@ const User = db.define(
     userEmail: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: "User already exists",
+      },
     },
     userPassword: {
       type: DataTypes.STRING,
