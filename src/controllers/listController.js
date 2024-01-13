@@ -5,20 +5,27 @@ require("dotenv").config();
 
 const createList = async (req, res) => {
   const { listName, userId } = req.body;
+  if (!listName) {
+    return res.status(400).json({
+      status: "failed",
+      message: "List name is required",
+    });
+  }
   try {
     const data = await List.create({ listName, UserId: userId });
-    console.dir(data);
-    res.status(200).json({ status: "success", list: data });
+    console.log(data);
+    res.status(200).json({ status: "success", data: data });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ status: "failed", message: error.message });
+    res
+      .status(500)
+      .json({ status: "failed", message: "Internal server error" });
   }
 };
 
 const getListData = async (req, res) => {
   const { userId } = req.body;
   try {
-    // Find the user with associated lists and tasks
     const user = await User.findByPk(userId, {
       include: [
         {
@@ -53,11 +60,12 @@ const getListData = async (req, res) => {
         : [],
     }));
 
-    // Send the data to the client
-    res.status(200).json({ status: "success", userLists: transformedData });
+    res.status(200).json({ status: "success", data: transformedData });
   } catch (error) {
     console.error("Error fetching user and lists:", error);
-    res.status(500).json({ status: "success", error: "Internal server error" });
+    res
+      .status(500)
+      .json({ status: "success", message: "Internal server error" });
   }
 };
 module.exports = { createList, getListData };

@@ -16,7 +16,11 @@ const Task = db.define(
     },
     taskName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "TaskName cannot be empty.",
+        },
+      },
     },
   },
   {

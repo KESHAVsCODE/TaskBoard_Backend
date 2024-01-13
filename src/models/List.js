@@ -12,7 +12,11 @@ const List = db.define(
     },
     listName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "ListName cannot be empty.",
+        },
+      },
     },
   },
   {

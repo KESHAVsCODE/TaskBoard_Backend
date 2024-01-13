@@ -22,8 +22,8 @@ db.authenticate()
   .then(() => {
     console.log("Connection established");
   })
-  .catch(() => {
-    console.log("Connection failed");
+  .catch((error) => {
+    console.log("Connection failed", error);
   });
 
 app.use("/user", userRouter);
@@ -31,7 +31,9 @@ app.use("/list", verifyUser, listRouter);
 app.use("/task", verifyUser, taskRouter);
 
 app.get("/", (req, res) => {
-  res.send("this is my app");
+  res
+    .status(200)
+    .json({ status: "success", message: "Welcome to the TaskBoard App" });
 });
 
 module.exports = app;

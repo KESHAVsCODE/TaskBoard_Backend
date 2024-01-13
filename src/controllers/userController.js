@@ -15,6 +15,7 @@ const loginPost = async (req, res) => {
     }
 
     const isPassword = await bcrypt.compare(userPassword, user.userPassword);
+
     if (isPassword) {
       const userData = {
         userId: user.userId,
@@ -25,22 +26,26 @@ const loginPost = async (req, res) => {
       };
 
       const jwtToken = jwt.sign(userData, process.env.JWT_SECRETE_KEY, options);
+
       res.cookie("AuthToken", jwtToken);
+
       res.status(200).json({ status: "success", data: userData });
     } else {
       res.status(401).json({ status: "failed", message: "Invalid password" });
     }
   } catch (error) {
-    res.status(400).json({ status: "failed", message: error.message });
+    console.log(error.message);
+    res
+      .status(500)
+      .json({ status: "failed", message: "Internal server error" });
   }
 };
 
 const signupPost = async (req, res) => {
-  console.log("Input Data is ->", req.body);
-
   const { userName, userPassword, userEmail } = req.body;
 
   const salt = bcrypt.genSaltSync(10);
+
   const hashPassword = bcrypt.hashSync(userPassword, salt);
 
   const newUser = {
@@ -48,12 +53,13 @@ const signupPost = async (req, res) => {
     userPassword: hashPassword,
     userEmail,
   };
+
   try {
     const data = await User.create(newUser);
     console.log(data);
     res
       .status(200)
-      .json({ status: "success", message: "user created successfully" });
+      .json({ status: "success", message: "User created successfully" });
   } catch (error) {
     console.log(error);
     res.status(400).json({ status: "failed", message: error.message });

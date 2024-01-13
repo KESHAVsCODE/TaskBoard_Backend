@@ -13,6 +13,14 @@ const User = db.define(
     userName: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: "UserName cannot be null.",
+        },
+        notEmpty: {
+          msg: "UserName cannot be empty.",
+        },
+      },
     },
     userEmail: {
       type: DataTypes.STRING,
@@ -21,10 +29,33 @@ const User = db.define(
         args: true,
         msg: "User already exists",
       },
+      validate: {
+        notNull: {
+          msg: "UserEmail cannot be null.",
+        },
+        notEmpty: {
+          msg: "UserEmail cannot be empty.",
+        },
+        isEmail: {
+          msg: "Invalid email address.",
+        },
+      },
     },
     userPassword: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: "UserPassword cannot be null.",
+        },
+        notEmpty: {
+          msg: "UserPassword cannot be empty.",
+        },
+        len: {
+          args: [6, 255],
+          msg: "UserPassword must be between 6 and 255 characters.",
+        },
+      },
     },
   },
   {
