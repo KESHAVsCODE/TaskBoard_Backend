@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const verifyUser = async (req, res, next) => {
   const { AuthToken } = req.cookies;
-
+  console.log("verifyUser", AuthToken);
   if (!AuthToken) {
     return res.status(401).json({
       status: "failed",
@@ -14,6 +14,7 @@ const verifyUser = async (req, res, next) => {
     req.body.userId = user.userId;
     next();
   } catch (err) {
+    console.log("verifyUser", err.message);
     res.status(400).json({ status: "failure", message: err.message });
   }
 };

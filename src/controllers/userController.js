@@ -30,7 +30,7 @@ const loginPost = async (req, res) => {
       res.cookie("AuthToken", jwtToken, {
         secure: true,
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "None",
       });
 
       res.status(200).json({ status: "success", data: userData });
