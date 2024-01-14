@@ -12,7 +12,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // or specific app url
+    origin: "https://taskboard24.netlify.app", // or specific app url
     credentials: true,
   })
 );
