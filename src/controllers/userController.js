@@ -27,7 +27,11 @@ const loginPost = async (req, res) => {
 
       const jwtToken = jwt.sign(userData, process.env.JWT_SECRETE_KEY, options);
 
-      res.cookie("AuthToken", jwtToken);
+      res.cookie("AuthToken", jwtToken, {
+        secure: true,
+        httpOnly: true,
+        sameSite: "strict",
+      });
 
       res.status(200).json({ status: "success", data: userData });
     } else {

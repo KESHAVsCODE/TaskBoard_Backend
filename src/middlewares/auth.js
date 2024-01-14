@@ -2,10 +2,11 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const verifyUser = async (req, res, next) => {
   const { AuthToken } = req.cookies;
+
   if (!AuthToken) {
     return res.status(401).json({
       status: "failed",
-      message: `Authentication is required`,
+      message: `Auth token is required`,
     });
   }
   try {
